@@ -13,6 +13,7 @@ target_link_libraries(seal-c PRIVATE SEAL::seal)
 # C++ sources
 target_sources (seal-c
   PRIVATE
+    encryption_parameters.cpp
     context.cpp
 )
 

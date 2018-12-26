@@ -3,6 +3,8 @@
 #ifndef _SEAL_C_SHARED_CONTEXT_HPP
 #define _SEAL_C_SHARED_CONTEXT_HPP
 
+#include <memory>
+
 #include <seal/encryptionparams.h>
 
 #include <seal-c/types.h>

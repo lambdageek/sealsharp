@@ -4,6 +4,7 @@
 
 #include <seal-c/types.h>
 #include <seal/encryptionparams.h>
+#include "wrap.hpp"
 
 namespace seal_c {
 
@@ -16,6 +17,7 @@ namespace seal_c {
 		struct Unwrap<SEALEncryptionParametersRef> : public WrapPair<seal::EncryptionParameters*, SEALEncryptionParametersRef> {};
 
 	} // namespace wrap
+
 } // namespace seal_c
 
 #endif
