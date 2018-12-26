@@ -21,3 +21,9 @@ compiler.
 
   The above will also compile the SEAL examples into `./external/SEAL/bin/sealexamples`
 
+3. Compile the `seal-c` C bindings
+
+    ./seal-c.sh
+
+  This will leave a shared library in `./build/install/lib/` named `libseal-c.so` or `libseal-c.dylib`
+
