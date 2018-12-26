@@ -14,3 +14,10 @@ compiler.
 1. Make sure to initialize submodules when you first clone or when you pull changes.
 
     git submodule update --init --recursive
+
+2. Run `prepare.sh` to build SEAL and install it into `./build/install`
+
+    ./prepare.sh
+
+  The above will also compile the SEAL examples into `./external/SEAL/bin/sealexamples`
+
