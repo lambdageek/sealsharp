@@ -27,4 +27,9 @@ compiler.
 
    This will leave a shared library in `./build/install/lib/` named `libseal-c.so` or `libseal-c.dylib`
 
+4. Build the C# bindings
+
+       cd sealsharp
+       msbuild
+
 
