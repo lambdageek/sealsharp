@@ -7,7 +7,7 @@ namespace SEAL {
 			BFV
 		}
 
-		private Internal.EncryptionParameters handle;
+		internal Internal.EncryptionParameters handle;
 
 		public EncryptionParameters (Scheme scheme) {
 			switch (scheme) {

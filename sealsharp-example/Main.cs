@@ -15,6 +15,7 @@ namespace Example {
 			var p = new EncryptionParameters (EncryptionParameters.Scheme.BFV);
 			p.PolyModulusDegree = 2048;
 			p.CoeffModulus = CoeffModulus.CoeffModulus128 (2048);
+			var c = SEALContext.Create (p);
 			Console.WriteLine ("All Done");
 		}
 	}
