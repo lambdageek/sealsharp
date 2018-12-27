@@ -1,0 +1,23 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sealsharp", "sealsharp\sealsharp.csproj", "{46FFEC2D-E237-430C-9A31-168886D6F505}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sealsharp-example", "sealsharp-example\sealsharp-example.csproj", "{86FC94CD-5573-4EE0-8FED-877BA6DABF89}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{46FFEC2D-E237-430C-9A31-168886D6F505}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46FFEC2D-E237-430C-9A31-168886D6F505}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46FFEC2D-E237-430C-9A31-168886D6F505}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46FFEC2D-E237-430C-9A31-168886D6F505}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86FC94CD-5573-4EE0-8FED-877BA6DABF89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86FC94CD-5573-4EE0-8FED-877BA6DABF89}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86FC94CD-5573-4EE0-8FED-877BA6DABF89}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86FC94CD-5573-4EE0-8FED-877BA6DABF89}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
