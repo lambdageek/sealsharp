@@ -16,6 +16,7 @@ target_sources (seal-c
     coeff_modulus.cpp
     encryption_parameters.cpp
     context.cpp
+    key_generator.cpp
 )
 
 # include directories.

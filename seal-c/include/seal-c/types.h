@@ -10,6 +10,7 @@ typedef int SEALBoolean;
 /* Various classes defined by SEAL. */
 typedef struct SEALOpaqueContext *SEALContextRef;
 typedef struct SEALOpaqueEncryptionParameters *SEALEncryptionParametersRef;
+typedef struct SEALOpaqueKeyGenerator *SEALKeyGeneratorRef;
 
 /* This next group are a set of types that are not just classes defined in SEAL. */
 
