@@ -4,28 +4,46 @@ using System.Runtime.InteropServices;
 namespace SEAL.Internal {
 
 	class EncryptionParameters : SafeHandle {
-		public EncryptionParameters () : base (IntPtr.Zero, false) {}
+		/* called by P/Invoke when returning an EncryptionParameters */
+		private EncryptionParameters () : base (IntPtr.Zero, true) {}
 
-		private EncryptionParameters (IntPtr h) : base (h, true) {}
-
-		public static EncryptionParameters MakeBFV () {
-			return new EncryptionParameters (SEAL_EncryptionParameters_construct_BFV ());
+		public static EncryptionParameters MakeBFV ()
+		{
+			return SEAL_EncryptionParameters_construct_BFV ();
 		}
 
 		public override bool IsInvalid {
 			get { return handle == IntPtr.Zero; }
 		}
 
-		protected override bool ReleaseHandle () {
+		protected override bool ReleaseHandle ()
+		{
 			SEAL_EncryptionParameters_destroy (handle);
 			return true;
 		}
 
-		[DllImport (SEALC.Lib)]
-		private static extern IntPtr SEAL_EncryptionParameters_construct_BFV ();
+		public void SetPolyModulusDegree (uint degree)
+		{
+			SEAL_EncryptionParameters_set_poly_modulus_degree (this, degree);
+		}
+
+		public void SetCoeffModulus (CoeffModulus coeff_modulus)
+		{
+			SEAL_EncryptionParameters_set_coeff_modulus (this, coeff_modulus);
+		}
+
 
 		[DllImport (SEALC.Lib)]
-		private static extern void SEAL_EncryptionParameters_destroy (IntPtr parms);
+		private static extern EncryptionParameters SEAL_EncryptionParameters_construct_BFV ();
+
+		[DllImport (SEALC.Lib)]
+		private static extern void SEAL_EncryptionParameters_destroy (IntPtr handle);
+
+		[DllImport (SEALC.Lib)]
+		private static extern void SEAL_EncryptionParameters_set_poly_modulus_degree (EncryptionParameters parms, uint degree);
+
+		[DllImport (SEALC.Lib)]
+		private static extern void SEAL_EncryptionParameters_set_coeff_modulus (EncryptionParameters parms, CoeffModulus coeff_modulus);
 
 	}
 }

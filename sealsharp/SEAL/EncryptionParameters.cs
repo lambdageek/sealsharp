@@ -16,5 +16,17 @@ namespace SEAL {
 					break;
 			}
 		}
+
+		public uint PolyModulusDegree {
+			set {
+				handle.SetPolyModulusDegree (value);
+			}
+		}
+
+		public CoeffModulus CoeffModulus {
+			set {
+				handle.SetCoeffModulus (value.handle);
+			}
+		}
 	}
 }
