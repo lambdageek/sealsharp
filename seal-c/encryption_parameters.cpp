@@ -46,3 +46,10 @@ SEAL_EncryptionParameters_set_coeff_modulus (SEALEncryptionParametersRef parms, 
 {
 	seal_c::wrap::unwrap (parms)->set_coeff_modulus (seal_c::wrap::unwrap (coeff_modulus)->get_coeff_modulus ());
 }
+
+void
+SEAL_EncryptionParameters_set_plain_modulus (SEALEncryptionParametersRef parms, uint64_t small_modulus)
+{
+	// TODO: revisit if we ever need to manipulate a SmallModulus directly
+	seal_c::wrap::unwrap (parms)->set_plain_modulus (seal::SmallModulus (small_modulus));
+}

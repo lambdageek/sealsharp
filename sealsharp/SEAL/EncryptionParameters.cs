@@ -28,5 +28,11 @@ namespace SEAL {
 				handle.SetCoeffModulus (value.handle);
 			}
 		}
+
+		public ulong PlainModulus {
+			set {
+				handle.SetPlainModulus (value);
+			}
+		}
 	}
 }
