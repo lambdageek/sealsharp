@@ -32,4 +32,9 @@ compiler.
        cd sealsharp
        msbuild
 
+5. Build the C# example
 
+       cd sealsharp-example
+       msbuild
+
+The last two steps could also be done from Visual Studio by opening `sealsharp.sln` and building from the menus
