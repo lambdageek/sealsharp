@@ -22,6 +22,9 @@ namespace Example {
 
 			var keygen = new KeyGenerator (context);
 
+			var public_key = keygen.PublicKey;
+			var secret_key = keygen.SecretKey;
+			
 			Console.WriteLine ("All Done");
 		}
 	}

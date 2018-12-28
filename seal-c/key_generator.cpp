@@ -8,6 +8,8 @@
 
 #include "shared_context.hpp"
 #include "key_generator.hpp"
+#include "public_key.hpp"
+#include "secret_key.hpp"
 #include "wrap.hpp"
 
 SEALKeyGeneratorRef
@@ -17,6 +19,20 @@ SEAL_KeyGenerator_construct (SEALSharedContextRef context)
 	// set correctly.  Need to either catch here and signal to C#, or else
 	// implement checks in C# that interrogate the EncryptionParameters.
 	auto p = std::make_unique<seal::KeyGenerator> (seal_c::wrap::unwrap (context)->get_context ());
+	return seal_c::wrap::wrap (p.release ());
+}
+
+SEALPublicKeyRef
+SEAL_KeyGenerator_get_public_key (SEALKeyGeneratorRef keygen)
+{
+	auto p = std::make_unique <seal::PublicKey> (seal_c::wrap::unwrap (keygen)->public_key ());
+	return seal_c::wrap::wrap (p.release ());
+}
+
+SEALSecretKeyRef
+SEAL_KeyGenerator_get_secret_key (SEALKeyGeneratorRef keygen)
+{
+	auto p = std::make_unique <seal::SecretKey> (seal_c::wrap::unwrap (keygen)->secret_key ());
 	return seal_c::wrap::wrap (p.release ());
 }
 

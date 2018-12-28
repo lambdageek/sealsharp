@@ -9,5 +9,16 @@ namespace SEAL {
 			handle = Internal.KeyGenerator.Create (context.handle);
 		}
 		       
+		public PublicKey PublicKey {
+			get {
+				return new PublicKey (handle.GetPublicKey ());
+			}
+		}
+
+		public SecretKey SecretKey {
+			get {
+				return new SecretKey (handle.GetSecretKey ());
+			}
+		}
 	}
 }

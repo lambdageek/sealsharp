@@ -21,11 +21,27 @@ namespace SEAL.Internal {
 			return SEAL_KeyGenerator_construct (context);
 		}
 
+		public PublicKey GetPublicKey ()
+		{
+			return SEAL_KeyGenerator_get_public_key (this);
+		}
+
+		public SecretKey GetSecretKey ()
+		{
+			return SEAL_KeyGenerator_get_secret_key (this);
+		}
+
 		[DllImport (SEALC.Lib)]
 		private static extern void SEAL_KeyGenerator_destroy (IntPtr handle);
 
 		[DllImport (SEALC.Lib)]
 		private static extern KeyGenerator SEAL_KeyGenerator_construct (SEALSharedContext context);
 
+		[DllImport (SEALC.Lib)]
+		private static extern PublicKey SEAL_KeyGenerator_get_public_key (KeyGenerator keygen);
+
+		[DllImport (SEALC.Lib)]
+		private static extern SecretKey SEAL_KeyGenerator_get_secret_key (KeyGenerator keygen);
+		
 	}
 }
