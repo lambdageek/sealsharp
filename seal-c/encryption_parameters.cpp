@@ -6,6 +6,7 @@
 
 #include <seal-c/encryption_parameters.h>
 
+#include "small_modulus.hpp"
 #include "coeff_modulus.hpp"
 #include "encryption_parameters.hpp"
 
@@ -48,8 +49,9 @@ SEAL_EncryptionParameters_set_coeff_modulus (SEALEncryptionParametersRef parms, 
 }
 
 void
-SEAL_EncryptionParameters_set_plain_modulus (SEALEncryptionParametersRef parms, uint64_t small_modulus)
+SEAL_EncryptionParameters_set_plain_modulus (SEALEncryptionParametersRef parms, SEALSmallModulusRef small_modulus)
 {
 	// TODO: revisit if we ever need to manipulate a SmallModulus directly
-	seal_c::wrap::unwrap (parms)->set_plain_modulus (seal::SmallModulus (small_modulus));
+	seal_c::wrap::unwrap (parms)->set_plain_modulus (*seal_c::wrap::unwrap (small_modulus));
+}
 }

@@ -29,9 +29,9 @@ namespace SEAL {
 			}
 		}
 
-		public ulong PlainModulus {
+		public SmallModulus PlainModulus {
 			set {
-				handle.SetPlainModulus (value);
+				handle.SetPlainModulus (value.handle);
 			}
 		}
 	}

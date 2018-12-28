@@ -33,7 +33,7 @@ namespace SEAL.Internal {
 		}
 
 
-		public void SetPlainModulus (ulong small_modulus)
+		public void SetPlainModulus (SmallModulus small_modulus)
 		{
 			SEAL_EncryptionParameters_set_plain_modulus (this, small_modulus);
 		}
@@ -51,7 +51,7 @@ namespace SEAL.Internal {
 		private static extern void SEAL_EncryptionParameters_set_coeff_modulus (EncryptionParameters parms, CoeffModulus coeff_modulus);
 
 		[DllImport (SEALC.Lib)]
-		private static extern void SEAL_EncryptionParameters_set_plain_modulus (EncryptionParameters parms, ulong small_modulus);
+		private static extern void SEAL_EncryptionParameters_set_plain_modulus (EncryptionParameters parms, SmallModulus small_modulus);
 
 	}
 }
