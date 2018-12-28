@@ -4,8 +4,10 @@
 #ifndef _SEAL_C_TYPES_H
 #define _SEAL_C_TYPES_H
 
+#include <stdint.h>
+
 /* SEAL uses the C++ bool type, which isn't in C.  So use an int */
-typedef int SEALBoolean;
+typedef int32_t SEALBoolean;
 
 /* Various classes defined by SEAL. */
 typedef struct SEALOpaqueContext *SEALContextRef;
