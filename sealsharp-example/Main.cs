@@ -33,6 +33,9 @@ namespace Example {
 			long decoded_l = encoder.DecodeLong (encoded_l);
 			Console.WriteLine ($"encoding {l} -> ... -> decoding {decoded_l}"); // TODO Plaintext.ToString ()
 
+			if (!encryptor.Encrypt (encoded_l, out Ciphertext encrypted_l))
+				throw new Exception ("encryption failed");
+
 			Console.WriteLine ("All Done");
 		}
 	}
