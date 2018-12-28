@@ -12,11 +12,11 @@ namespace Example {
 
 		public static void example_bfv_basics_i ()
 		{
-			var p = new EncryptionParameters (EncryptionParameters.Scheme.BFV);
-			p.PolyModulusDegree = 2048;
-			p.PlainModulus = new SmallModulus (1 << 8);
-			p.CoeffModulus = CoeffModulus.CoeffModulus128 (2048);
-			var context = SEALContext.Create (p);
+			var parms = new EncryptionParameters (EncryptionParameters.Scheme.BFV);
+			parms.PolyModulusDegree = 2048;
+			parms.PlainModulus = new SmallModulus (1 << 8);
+			parms.CoeffModulus = CoeffModulus.CoeffModulus128 (2048);
+			var context = SEALContext.Create (parms);
 
 			var keygen = new KeyGenerator (context);
 
