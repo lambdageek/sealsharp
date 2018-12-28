@@ -16,6 +16,8 @@ typedef struct SEALOpaquePublicKey *SEALPublicKeyRef;
 typedef struct SEALOpaqueSecretKey *SEALSecretKeyRef;
 typedef struct SEALOpaqueEncryptor *SEALEncryptorRef;
 typedef struct SEALOpaqueDecryptor *SEALDecryptorRef;
+typedef struct SEALOpaquePlaintext *SEALPlaintextRef;
+typedef struct SEALOpaqueCiphertext *SEALCiphertextRef;
 
 /* Encoder hierarchy */
 typedef struct SEALOpaqueAbstractIntegerEncoder *SEALAbstractIntegerEncoderRef;

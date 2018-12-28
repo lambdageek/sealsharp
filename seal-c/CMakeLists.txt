@@ -23,6 +23,8 @@ target_sources (seal-c
     secret_key.cpp
     encryptor.cpp
     decryptor.cpp
+    plaintext.cpp
+    ciphertext.cpp
 )
 
 # include directories.
