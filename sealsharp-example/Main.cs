@@ -36,6 +36,15 @@ namespace Example {
 			if (!encryptor.Encrypt (encoded_l, out Ciphertext encrypted_l))
 				throw new Exception ("encryption failed");
 
+			if (!decryptor.Decrypt (encrypted_l, out Plaintext decrypted_l))
+				throw new Exception ("decryption failed");
+
+			long decrypted_decoded_l = encoder.DecodeLong (decrypted_l);
+			Console.WriteLine ($"encoding {l} -> encrypting -> ... -> decrypting -> decoding {decrypted_decoded_l}");
+
+			if (decrypted_decoded_l != l)
+				throw new Exception ("encoding+encrypting roundtrip failed");
+
 			Console.WriteLine ("All Done");
 		}
 	}

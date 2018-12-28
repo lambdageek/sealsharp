@@ -20,10 +20,19 @@ namespace SEAL.Internal {
 			return SEAL_Decryptor_construct (context, secret_key);
 		}
 
+		public bool Decrypt (Ciphertext ciphertext, out Plaintext result)
+		{
+			result = SEAL_Decryptor_decrypt_new (this, ciphertext, out int success);
+			return success != 0;
+		}
+
 		[DllImport (SEALC.Lib)]
 		private static extern void SEAL_Decryptor_destroy (IntPtr handle);
 
 		[DllImport (SEALC.Lib)]
 		private static extern Decryptor SEAL_Decryptor_construct (SEALSharedContext context, SecretKey secret_key);
+
+		[DllImport (SEALC.Lib)]
+		private static extern Plaintext SEAL_Decryptor_decrypt_new (Decryptor decryptor, Ciphertext ciphertext, out int success);
 	}
 }

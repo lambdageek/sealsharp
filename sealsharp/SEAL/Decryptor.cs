@@ -8,5 +8,13 @@ namespace SEAL {
 		{
 			handle = Internal.Decryptor.Make (context.handle, secret_key.handle);
 		}
+
+		public bool Decrypt (Ciphertext ciphertext, out Plaintext result)
+		{
+			bool success = handle.Decrypt (ciphertext.handle, out Internal.Plaintext result_h);
+			result = success ? new Plaintext (result_h) : null;
+			return success;
+		}
+
 	}
 }
