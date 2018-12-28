@@ -18,7 +18,7 @@ namespace Example {
 			p.CoeffModulus = CoeffModulus.CoeffModulus128 (2048);
 			var context = SEALContext.Create (p);
 
-			var keygen = KeyGenerator.Create (context);
+			var keygen = new KeyGenerator (context);
 
 			Console.WriteLine ("All Done");
 		}
