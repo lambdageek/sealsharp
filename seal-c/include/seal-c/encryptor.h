@@ -10,6 +10,9 @@ BEGIN_SEAL_C_DECL
 SEALEncryptorRef
 SEAL_Encryptor_construct (SEALSharedContextRef context, SEALPublicKeyRef public_key);
 
+SEALCiphertextRef
+SEAL_Encryptor_encrypt_new (SEALEncryptorRef encryptor, SEALPlaintextRef plaintext, SEALBoolean *success);
+
 void
 SEAL_Encryptor_destroy (SEALEncryptorRef encryptor);
 

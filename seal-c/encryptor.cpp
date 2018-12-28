@@ -1,4 +1,5 @@
 
+#include <stdexcept>
 #include <memory>
 
 #include <seal/encryptor.h>
@@ -18,6 +19,13 @@ SEAL_Encryptor_construct (SEALSharedContextRef context, SEALPublicKeyRef public_
 	auto ctx = unwrap (context)->get_context ();
 	auto p = std::make_unique <seal::Encryptor> (ctx, *unwrap (public_key));
 	return seal_c::wrap::wrap (p.release ());
+}
+
+SEALCiphertextRef
+SEAL_Encryptor_encrypt_new (SEALEncryptorRef, SEALPlaintextRef, SEALBoolean *success)
+{
+	if (!success)
+		throw new std::logic_error ("success must not be a nullptr");
 }
 
 void

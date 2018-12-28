@@ -12,6 +12,12 @@ BEGIN_SEAL_C_DECL
 void
 SEAL_AbstractIntegerEncoder_destroy (SEALAbstractIntegerEncoderRef encoder);
 
+SEALPlaintextRef
+SEAL_AbstractIntegerEncoder_encode_int64 (SEALAbstractIntegerEncoderRef encoder, int64_t i);
+
+int64_t
+SEAL_AbstractIntegerEncoder_decode_int64 (SEALAbstractIntegerEncoderRef encoder, SEALPlaintextRef plaintext);
+
 SEALIntegerEncoderRef
 SEAL_IntegerEncoder_construct (SEALSmallModulusRef plain_modulus, uint64_t base);
 
