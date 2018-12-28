@@ -38,6 +38,11 @@ namespace SEAL.Internal {
 			SEAL_EncryptionParameters_set_plain_modulus (this, small_modulus);
 		}
 
+		public SmallModulus GetPlainModulus ()
+		{
+			return SEAL_EncryptionParameters_get_plain_modulus (this);
+		}
+
 		[DllImport (SEALC.Lib)]
 		private static extern EncryptionParameters SEAL_EncryptionParameters_construct_BFV ();
 
@@ -52,6 +57,9 @@ namespace SEAL.Internal {
 
 		[DllImport (SEALC.Lib)]
 		private static extern void SEAL_EncryptionParameters_set_plain_modulus (EncryptionParameters parms, SmallModulus small_modulus);
+
+		[DllImport (SEALC.Lib)]
+		private static extern SmallModulus SEAL_EncryptionParameters_get_plain_modulus (EncryptionParameters parms);
 
 	}
 }

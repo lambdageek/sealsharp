@@ -54,4 +54,10 @@ SEAL_EncryptionParameters_set_plain_modulus (SEALEncryptionParametersRef parms, 
 	// TODO: revisit if we ever need to manipulate a SmallModulus directly
 	seal_c::wrap::unwrap (parms)->set_plain_modulus (*seal_c::wrap::unwrap (small_modulus));
 }
+
+SEALSmallModulusRef
+SEAL_EncryptionParameters_get_plain_modulus (SEALEncryptionParametersRef parms)
+{
+	auto p = std::make_unique<seal::SmallModulus> (seal_c::wrap::unwrap (parms)->plain_modulus ());
+	return seal_c::wrap::wrap (p.release ());
 }

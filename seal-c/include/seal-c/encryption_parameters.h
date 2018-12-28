@@ -24,6 +24,9 @@ SEAL_EncryptionParameters_set_coeff_modulus (SEALEncryptionParametersRef parms, 
 void
 SEAL_EncryptionParameters_set_plain_modulus (SEALEncryptionParametersRef parms, SEALSmallModulusRef small_modulus);
 
+SEALSmallModulusRef
+SEAL_EncryptionParameters_get_plain_modulus (SEALEncryptionParametersRef parms);
+
 void
 SEAL_EncryptionParameters_destroy (SEALEncryptionParametersRef parms);
 

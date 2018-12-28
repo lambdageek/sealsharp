@@ -30,6 +30,9 @@ namespace SEAL {
 		}
 
 		public SmallModulus PlainModulus {
+			get {
+				return new SmallModulus (handle.GetPlainModulus ());
+			}
 			set {
 				handle.SetPlainModulus (value.handle);
 			}
