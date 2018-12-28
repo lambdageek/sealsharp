@@ -24,7 +24,10 @@ namespace Example {
 
 			var public_key = keygen.PublicKey;
 			var secret_key = keygen.SecretKey;
-			
+
+			var encryptor = new Encryptor (context, public_key);
+			var decryptor = new Decryptor (context, secret_key);
+
 			Console.WriteLine ("All Done");
 		}
 	}

@@ -21,6 +21,8 @@ target_sources (seal-c
     encoder.cpp
     public_key.cpp
     secret_key.cpp
+    encryptor.cpp
+    decryptor.cpp
 )
 
 # include directories.
