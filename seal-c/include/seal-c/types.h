@@ -13,6 +13,10 @@ typedef struct SEALOpaqueEncryptionParameters *SEALEncryptionParametersRef;
 typedef struct SEALOpaqueKeyGenerator *SEALKeyGeneratorRef;
 typedef struct SEALOpaqueSmallModulus *SEALSmallModulusRef;
 
+/* Encoder hierarchy */
+typedef struct SEALOpaqueAbstractIntegerEncoder *SEALAbstractIntegerEncoderRef;
+typedef struct SEALOpaqueIntegerEncoder *SEALIntegerEncoderRef;
+
 /* This next group are a set of types that are not just classes defined in SEAL. */
 
 /* Wraps a std::shared_ptr<SEALContext> */

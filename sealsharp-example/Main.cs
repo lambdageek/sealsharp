@@ -18,6 +18,8 @@ namespace Example {
 			parms.CoeffModulus = CoeffModulus.CoeffModulus128 (2048);
 			var context = SEALContext.Create (parms);
 
+			var encoder = new IntegerEncoder (parms.PlainModulus);
+
 			var keygen = new KeyGenerator (context);
 
 			Console.WriteLine ("All Done");

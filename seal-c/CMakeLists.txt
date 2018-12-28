@@ -18,6 +18,7 @@ target_sources (seal-c
     context.cpp
     key_generator.cpp
     small_modulus.cpp
+    encoder.cpp
 )
 
 # include directories.
