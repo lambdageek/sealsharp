@@ -27,14 +27,13 @@ compiler.
 
    This will leave a shared library in `./build/install/lib/` named `libseal-c.so` or `libseal-c.dylib`
 
-4. Build the C# bindings
+4. Build the C# bindings and example
 
-       cd sealsharp
-       msbuild
+       msbuild /t:Restore
+	   msbuild
 
-5. Build the C# example
+5. Run the C# example
 
-       cd sealsharp-example
-       msbuild
+       mono build/sealsharp-example/bin/Debug/net462/sealsharp-example.exe
 
 The last two steps could also be done from Visual Studio by opening `sealsharp.sln` and building from the menus
