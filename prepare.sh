@@ -8,6 +8,9 @@ topdir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 # directory where we'll put SEAL
 mkdir -p "${topdir}/build/install"
 
+# build with -fPIC
+EXTRA_CMAKE_OPTIONS="-DCMAKE_POSITION_INDEPENDENT_CODE=ON"
+
 # build SEAL and put it in the install directory
 pushd "${topdir}/build/seal"
 echo "topdir is ${topdir}"
