@@ -12,6 +12,7 @@ mkdir -p "${topdir}/build/install"
 EXTRA_CMAKE_OPTIONS="-DCMAKE_POSITION_INDEPENDENT_CODE=ON"
 
 # build SEAL and put it in the install directory
+mkdir -p "${topdir}/build/seal"
 pushd "${topdir}/build/seal"
 echo "topdir is ${topdir}"
 cmake "-DCMAKE_INSTALL_PREFIX=${topdir}/build/install" "${topdir}/external/SEAL/src"
