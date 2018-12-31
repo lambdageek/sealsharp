@@ -4,7 +4,7 @@
 #include <seal-c/context.h>
 #include <seal-c/c-decl.h>
 
-#include <SEAL/context.h>
+#include <seal/context.h>
 
 #include "wrap.hpp"
 #include "shared_context.hpp"
