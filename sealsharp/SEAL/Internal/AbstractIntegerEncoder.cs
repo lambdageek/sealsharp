@@ -19,7 +19,12 @@ namespace SEAL.Internal {
 			return SEAL_AbstractIntegerEncoder_encode_int64 (this, l);
 		}
 
-		public long DecodeLong (Plaintext plaintext)
+        public Plaintext EncodeInt (int l)
+        {
+            return SEAL_AbstractIntegerEncoder_encode_int32(this, l);
+        }
+
+        public long DecodeLong (Plaintext plaintext)
 		{
 			return SEAL_AbstractIntegerEncoder_decode_int64 (this, plaintext);
 		}
@@ -30,7 +35,10 @@ namespace SEAL.Internal {
 		[DllImport (SEALC.Lib)]
 		private static extern Plaintext SEAL_AbstractIntegerEncoder_encode_int64 (AbstractIntegerEncoder encoder, long l);
 
-		[DllImport (SEALC.Lib)]
+        [DllImport (SEALC.Lib)]
+        private static extern Plaintext SEAL_AbstractIntegerEncoder_encode_int32(AbstractIntegerEncoder encoder, int l);
+
+        [DllImport (SEALC.Lib)]
 		private static extern long SEAL_AbstractIntegerEncoder_decode_int64 (AbstractIntegerEncoder encoder, Plaintext plaintext);
 
 	}
