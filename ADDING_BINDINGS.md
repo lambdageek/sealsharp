@@ -167,7 +167,7 @@ In that case we do the following:
    various arguments, rather than different methods with different names for
    each type of argument.  (The internal class could have also done this, but
    it seemed better to stay a bit in sync with the C code).
-   
+)   
 6. At this point we can build the C# library.  (Either in visual studio, or using `msbuild` from the command line).
 
 7. Next we can try calling the method in `sealsharp-example/Main.cs`
@@ -184,10 +184,294 @@ In that case we do the following:
    
 ## How to add a new C++ classes ##
 
-***TODO: Finish this.***
+Suppose we want to add the C++ class `seal::Evaluator` from
+`external/SEAL/src/seal/evaluator.h` as a new class `SEAL.Evaluator` in C#.
 
-To add a new class you need to make a new C opaque struct that represents a
-pointer to the underlying C++ class, and at least expose the destructor for the
+1. First we need to make an opaque C struct for the class.  We'll call it `SEALEvaluatorRef`.
+
+   In `seal-c/include/seal-c/types.h` add:
+
+   ```
+   typedef struct SEALOpaqueEvaluator *SEALEvaluatorRef;
+   ```
+
+   The C struct `SEALOpaqueEvaluator` will be a struct with no definition - it
+   only exists so that we can wrap `seal::Evalutor *` (a pointer to a C++
+   class) as a `SEALEvaluatorRef` when we need to pass arguments or return
+   values of that type.
+   
+2. Next we need to teach the wrapper machinery about the new type.
+
+   Create a new file `seal-c/evaluator.hpp` with this boilerplate:
+   
+   ```
+   #ifndef _SEAL_C_EVALUATOR_HPP
+   #define _SEAL_C_EVALUATOR_HPP
+   
+   #include <seal/evaluator.h>
+   
+   #include <seal-c/types.h>
+   
+   #include "wrap.hpp"
+   
+   namespace seal_c {
+   	namespace wrap {
+   		template<>
+   		struct Wrap<seal::Evaluator*> : public WrapPair<seal::Evaluator*, SEALEvaluatorRef> {};
+   
+   		template<>
+   		struct Unwrap<SEALEvaluatorRef> : public WrapPair<seal::Evaluator*, SEALEvaluatorRef> {};
+   	} // namespace wrap
+   } // namespace seal_c
+   
+   #endif
+   ```
+   
+   This will make it so that `seal_c::wrap::wrap` can take a `seal::Evaluator*`
+   and turn it into a `SEALEvaluatorRef`, and `seal_c::wrap::unwrap` can turn a
+   `SEALEvaluatorRef` back into a `seal::Evaluator*`.
+   
+   (A common source of compiler errors in laters steps is forgetting to
+   `#include "evaluator.hpp"` in which case you will get a horrible mess of
+   `clang` errors when you use `wrap` or `unwrap`)
+   
+3. Next we create a new C header that will be used to declare the C wrapper
+   functions for all the methods of `SEALEvaluatorRef`.  At the beginning we
+   will add the single most important method `SEAL_Evaluator_destroy` which
+   will be used to call the destructor.
+   
+   In `seal-c/include/seal-c/evaluator.h` define:
+   
+   ```
+   #ifndef _SEAL_C_EVALUATOR_H
+   #define _SEAL_C_EVALUATOR_H
+   
+   #include <seal-c/c-decl.h>
+   #include <seal-c/types.h>
+   
+   BEGIN_SEAL_C_DECL
+   
+   void
+   SEAL_Evaluator_destroy (SEALEvaluatorRef evaluator);
+   
+   END_SEAL_C_DECL
+   
+   #endif
+   ```
+   
+   (Note that the `include/` header file ends in `.h`, while the
+   `seal-c/evaluator.hpp` internal header ends in `.hpp` - this is just a
+   convention, but it's being used to distinguish the headers that will form
+   the C API, from the headers that have C++ details that are internal to the
+   seal-c binding.)
+   
+4. Next in `seal-c/evaluator.cpp` we will implement `SEAL_Evaluator_destroy`
+
+   ```
+   #include <seal/evaluator.h>      // 1
+   
+   #include <seal-c/evaluator.h>    // 2
+   #include "evaluator.hpp"         // 3
+   #include "wrap.hpp"               // 4
+   
+   void
+   SEAL_Evaluator_destroy (SEALEvaluatorRef evaluator)
+   {
+   	delete seal_c::wrap::unwrap (evaluator);   // 5
+   }
+   ```
+   
+   The implementation is:
+   
+   1. We include the header that defines the C++ `seal::Evaluator class`
+   2. We also include the header that declares the C `SEAL_Evaluator_destroy` function
+   3. And also the header that defines how to `wrap` and `unwrap` an evaluator
+   4. And also the header that defines the `wrap`/`unwrap` machinery in general
+   5. Finally in the implementation we call `delete` on the `SEAL::Evaluator*`
+      that we get by unwrapping the `SEALEvaluatorRef` argument that we will
+      get from the C# world.
+	  
+5. At this point we should be able to build the C library
+
+   ```
+   ./seal-c.sh
+   ```
+
+6. Next we add a new internal C# class derived from `SafeHandle` that will
+   represent a `SEALEvaluatorRef` in C#.
+   
+   In `sealsharp/SEAL/Internal/Evaluator.cs`:
+   
+   ```
+   using System;
+   using System.Runtime.InteropServices;
+   
+   namespace SEAL.Internal {
+   	class Evaluator : SafeHandle {
+   		/* called by P/Invoke when returning a Evaluator */
+   		private Evaluator () : base (IntPtr.Zero, true) {}
+   		public override bool IsInvalid {
+   			get { return handle == IntPtr.Zero; }
+   		}
+   
+   		protected override bool ReleaseHandle ()
+   		{
+   			SEAL_Evaluator_destroy (handle);
+   			return true;
+   		}
+   
+   		[DllImport (SEALC.Lib)]
+   		private static extern void SEAL_Evaluator_destroy (IntPtr handle);
+   	}
+   }
+   ```
+   
+   Everything here is boilerplate.  But the important details are:
+   
+   1. The class `Evaluator` derives from `SafeHandle`.  If the C++ class
+      `seal::Evaluator` had a base class we would instead derive the
+      `SEAL.Internal.Evaluator` class from the base class internal C# class.
+      (for example `seal::IntegerEncoder` has the base class
+      `seal::AbstractIntegerEncoder` and so `SEAL.Internal.IntegerEncoder` is
+      derived from `SEAL.Internal.AbstractIntegerEncoder` instead of from
+      `SafeHandle`).
+	  
+   2. We override `IsInvalid` and `ReleaseHandle`.  The `IsInvalid` override is
+      boilerplate - a null pointer is invalid.  The `ReleaseHandle` override is
+      calling our new destroy function which is imported using `DllImport`, at
+      the end of the file.
+	  
+   3. We declared a `private` constructor `Evaluator()` that takes no
+      arguments.  In general, the `SEAL.Internal` classes don't have any other
+      constructors.  The private constructor is used by the marshalling
+      machinery in .NET to create `SEAL.Internal.Evaluator` instances whenever
+      we will `DllImport` functions with an `Evaluator` as the return type.
+	  
+7. Add a public C# class `SEAL.Evaluator` to represent evaluator instances.
+
+   In `sealsharp/SEAL/Evaluator.cs`:
+   
+   ```
+   using System;
+   
+   namespace SEAL {
+   	public class Evaluator {
+   		internal Internal.Evaluator handle;
+   
+   		internal Evaluator (Internal.Evaluator h)
+   		{
+   			handle = h;
+   		}
+   	}
+   }
+   ```
+   
+   This, again, is all boilerplate.  The important points are:
+   
+   1. If `seal::Evaluator` had a baseclass, then we would again make
+      `SEAL.Evaluator` derive from the base class.  (For example:
+      `SEAL.IntegerEncoder` derives from `SEAL.AbstractIntegerEncoder`).
+   2. We add a new internal constructor `Evaluator (Internal.Evaluator h)` that
+      makes a `SEAL.Evaluator` from a `SEAL.Internal.Evaluator`.  This will be
+      used whenever we add new public methods that need to return an
+      `Evaluator` instance.  (See how we created a `Plaintext` from an
+      `Internal.Plaintext` in the "adding a method" example).
+	  
+   3. The internal handle is stored in a field with `internal` visibility.
+      This is used to access the `SEAL.Internal.Evaluator` when we implement
+      methods that take a `SEAL.Evaluator` as an argument.
+      
+	  For classes that are base classes (e.g. `SEAL.AbstractIntegerEncoder`) we
+      would instead have a `internal abstract` `Handle` property getter that we
+      would override in the derived class (ie `SEAL.IntegerEncoder`).  There
+      should only be a `handle` field in the classes that don't themselves have
+      any subclasses - if a class is a base class, it should just have an
+      `abstract` `Handle` property.
+	  
+8. At this point we should be able to build the SEAL library either using
+   Visual Studio or `msbuild` from the command line.
+
+   However since we didn't add any constructors there aren't examples we can
+   run since we don't actually have any instances created.
+
+## Adding constructors ##
+
+Continuing the previous example we want to add the constructor for
+`seal::Evaluator` which is declared in `external/SEAL/src/seal/evaluator.h` as
+`Evaluator(std::shared_ptr<seal::SEALContext> context)`.
+
+This is actually similar to adding a new method to an existing class (ie we
+will add a new declaration to `seal-c/include/seal-c/evaluator.h` and an
+implementation to `seal-c/evaluator.cpp` followed by new methods in
+`SEAL.Internal.Evaluator` and `SEAL.Evaluator`).
+
+The points of note are:
+
+1. `std::shared_ptr<seal::SEALContext>` is represented in C with a
+   `SEALSharedContextRef` which actually wraps a `seal_c::SEALSharedContext`
+   object defined in `seal-c/shared_context.hpp` - not a
+   `std::shared_ptr<seal::SEALContext>` directly.  (This is because there's no
+   easy way to work with a `std::shared_ptr<>` from C, so we wrap it in a class
+   and then use our usual opaque C struct trick to work with the class).  There
+   is otherwise no difference.
+   
+2. By convention we will call the C function for this constructor `SEAL_Evaluator_construct`
+
+   in `seal-c/include/seal-c/evaluator.h` add
+   
+   ```
+   SEALEvaluatorRef
+   SEAL_Evaluator_construct (SEALSharedContextRef context);
+   ```
+   
+   and in `seal-c/evaluator.cpp` add
+   
+   ```
+   SEALEvaluatorRef
+   SEAL_Evaluator_construct (SEALSharedContextRef context)
+   {
+   	auto p = std::make_unique<seal::Evaluator> (seal_c::wrap::unwrap (context)->get_context ());
+   	return seal_c::wrap::wrap (p.release ());
+   }
+   ```
+
+3. In `SEAL.Internal.Evaluator` we will add an `internal` `static` method called `Create`:
+
+   ```
+   		public static Evaluator Create (SEALSharedContext context)
+   		{
+   			return SEAL_Evaluator_construct (context);
+   		}
+   ```
+   
+   and the usual `DllImport`
+   
+   ```
+   		[DllImport (SEALC.Lib)]
+   		private static extern Evaluator SEAL_Evaluator_construct (SEALSharedContext context);
+   ```
+   
+4. In `SEAL.Evaluator` we will add a new constructor `Evaluator (SEALContext)`
+
+   ```
+   		public Evaluator (SEALContext context)
+   		{
+   			handle = Internal.Evaluator.Create (context.handle);
+   		}
+   ```
+   
+
+As usual we compile the C library with `./seal-c.sh` and then `msbuild` to build the C# library.
+
+
+We can try to create a new `Evaluator` in the example with:
+
+```
+   var evaluator = new Evaluator (context);
+```
+
+And that will call our `SEAL_Evaluator_construct` method, followed, soon after,
+by `SEAL_Evaluator_destroy` when the evaluator object is garbage collected.the destructor for the
 class as a new method.
 
 
