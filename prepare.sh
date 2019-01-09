@@ -1,13 +1,13 @@
 #! /bin/bash
 
-set -e
-
 OPTNINJA=`which ninja`
 if [ $? -eq 0 ]; then
     GENERATOR="-GNinja"
 else
     GENERATOR=""
 fi
+
+set -e
 
 # get the absolute directory name where this file is located
 topdir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
