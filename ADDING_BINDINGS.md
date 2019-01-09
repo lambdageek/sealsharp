@@ -291,13 +291,37 @@ Suppose we want to add the C++ class `seal::Evaluator` from
       that we get by unwrapping the `SEALEvaluatorRef` argument that we will
       get from the C# world.
 	  
-5. At this point we should be able to build the C library
+5. Since `seal-c/evaluator.cpp` is a new source file, we have to add it to the the `seal-c/CMakeLists.txt` file:
+
+   ```
+   # C++ sources
+   target_sources (seal-c
+     PRIVATE
+       coeff_modulus.cpp
+       encryption_parameters.cpp
+       context.cpp
+       key_generator.cpp
+       small_modulus.cpp
+       encoder.cpp
+       public_key.cpp
+       secret_key.cpp
+       encryptor.cpp
+       decryptor.cpp
+       plaintext.cpp
+       ciphertext.cpp
+       evaluator.cpp
+   )
+   ```
+
+   Note the last line adds `evaluator.cpp` to the `target_sources`.
+
+6. At this point we should be able to build the C library
 
    ```
    ./seal-c.sh
    ```
 
-6. Next we add a new internal C# class derived from `SafeHandle` that will
+7. Next we add a new internal C# class derived from `SafeHandle` that will
    represent a `SEALEvaluatorRef` in C#.
    
    In `sealsharp/SEAL/Internal/Evaluator.cs`:
@@ -347,7 +371,7 @@ Suppose we want to add the C++ class `seal::Evaluator` from
       machinery in .NET to create `SEAL.Internal.Evaluator` instances whenever
       we will `DllImport` functions with an `Evaluator` as the return type.
 	  
-7. Add a public C# class `SEAL.Evaluator` to represent evaluator instances.
+8. Add a public C# class `SEAL.Evaluator` to represent evaluator instances.
 
    In `sealsharp/SEAL/Evaluator.cs`:
    
@@ -388,7 +412,7 @@ Suppose we want to add the C++ class `seal::Evaluator` from
       any subclasses - if a class is a base class, it should just have an
       `abstract` `Handle` property.
 	  
-8. At this point we should be able to build the SEAL library either using
+9. At this point we should be able to build the SEAL library either using
    Visual Studio or `msbuild` from the command line.
 
    However since we didn't add any constructors there aren't examples we can
