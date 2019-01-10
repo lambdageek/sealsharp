@@ -20,10 +20,20 @@ namespace SEAL.Internal {
 			return SEAL_Evaluator_construct (context);
 		}
 
+		public bool Add (Ciphertext ciphertext1, Ciphertext ciphertext2, out Ciphertext result)
+		{
+			result = SEAL_Evaluator_add (this, ciphertext1, ciphertext2, out int success);
+			return success != 0;
+		}
+
 		[DllImport (SEALC.Lib)]
 		private static extern void SEAL_Evaluator_destroy (IntPtr handle);
 
 		[DllImport (SEALC.Lib)]
 		private static extern Evaluator SEAL_Evaluator_construct (SEALSharedContext context);
+
+		[DllImport (SEALC.Lib)]
+		private static extern Ciphertext SEAL_Evaluator_add (Evaluator evaluator, Ciphertext ciphertext1, 
+															 Ciphertext ciphertext2, out int success);
 	}
 }

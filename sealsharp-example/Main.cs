@@ -28,11 +28,20 @@ namespace Example {
 			var encryptor = new Encryptor (context, public_key);
 			var decryptor = new Decryptor (context, secret_key);
 
+			var evaluator = new Evaluator (context);
+
 			long l = 5;
 			Plaintext encoded_l = encoder.Encode (l);
+
+			long m = 6;
+			Plaintext encoded_m = encoder.Encode (m);
+			encryptor.Encrypt (encoded_m, out Ciphertext encrypted_m);
+
+			// Encode and Decode Long 
 			long decoded_l = encoder.DecodeLong (encoded_l);
 			Console.WriteLine ($"encoding {l} -> ... -> decoding {decoded_l}"); // TODO Plaintext.ToString ()
 
+			// Encrypt Long
 			if (!encryptor.Encrypt (encoded_l, out Ciphertext encrypted_l))
 				throw new Exception ("encryption failed");
 
@@ -44,6 +53,13 @@ namespace Example {
 
 			if (decrypted_decoded_l != l)
 				throw new Exception ("encoding+encrypting roundtrip failed");
+
+			// Add 2 encrypted long
+			evaluator.Add(encrypted_l, encrypted_m, out Ciphertext encrypted_result);
+			decryptor.Decrypt(encrypted_result, out Plaintext decrypted_result);
+			long decrypted_decoded_result = encoder.DecodeLong(decrypted_result);
+			Console.WriteLine ($"addition -> {l} + {m} = {decrypted_decoded_result}");
+
 
 			Console.WriteLine ("All Done");
 		}

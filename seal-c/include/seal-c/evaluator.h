@@ -12,6 +12,10 @@ SEAL_Evaluator_destroy (SEALEvaluatorRef evaluator);
 SEALEvaluatorRef
 SEAL_Evaluator_construct (SEALSharedContextRef context);
 
+SEALCiphertextRef
+SEAL_Evaluator_add (SEALEvaluatorRef evaluator, SEALCiphertextRef ciphertext1, 
+	                SEALCiphertextRef ciphertext2, SEALBoolean *success);
+
 END_SEAL_C_DECL
 
 #endif

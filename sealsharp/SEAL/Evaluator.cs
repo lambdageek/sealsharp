@@ -14,5 +14,13 @@ namespace SEAL {
 			handle = Internal.Evaluator.Create (context.handle);
 		}
 
+		public bool Add (Ciphertext ciphertext1, Ciphertext ciphertext2, out Ciphertext result)
+		{
+			bool success = handle.Add (ciphertext1.handle, ciphertext2.handle, 
+				                       out Internal.Ciphertext result_h);
+			result = success ? new Ciphertext (result_h) : null;
+			return success;
+		}
+
 	}
 }
