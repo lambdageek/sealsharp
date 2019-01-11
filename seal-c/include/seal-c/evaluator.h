@@ -20,6 +20,10 @@ SEALCiphertextRef
 SEAL_Evaluator_multiply (SEALEvaluatorRef evaluator, SEALCiphertextRef ciphertext1, 
 	                     SEALCiphertextRef ciphertext2, SEALBoolean *success);
 
+SEALCiphertextRef
+SEAL_Evaluator_relinearize (SEALEvaluatorRef evaluator, SEALCiphertextRef ciphertext, 
+	                       SEALRelinKeysRef relin_keys, SEALBoolean *success);
+
 END_SEAL_C_DECL
 
 #endif

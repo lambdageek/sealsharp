@@ -31,6 +31,18 @@ namespace seal_c {
 		}
 	}
 
+	bool relinearize (seal::Evaluator& evaluator, const seal::Ciphertext& ciphertext, 
+		             const seal::RelinKeys& relin_keys, seal::Ciphertext& dest) noexcept
+	{
+		// TODO: don't just use a boolean, also write string error message to some buffer
+		try {
+			evaluator.relinearize (ciphertext, relin_keys, dest);
+			return true;
+		} catch (std::invalid_argument) {
+			return false;
+		}
+	}
+
 } // namespace seal_c
 
 void SEAL_Evaluator_destroy (SEALEvaluatorRef evaluator)
@@ -73,6 +85,23 @@ SEALCiphertextRef SEAL_Evaluator_multiply (SEALEvaluatorRef evaluator, SEALCiphe
 		throw new std::logic_error ("success must not be a nullptr");
 	auto result = std::make_unique <seal::Ciphertext> ();
 	if (seal_c::multiply (*unwrap (evaluator), *unwrap (ciphertext1), *unwrap (ciphertext2), *result)) {
+		*success = 1;
+		return wrap (result.release ());
+	} else {
+		*success = 0;
+		return wrap<seal::Ciphertext*> (nullptr);
+	}
+}
+
+SEALCiphertextRef SEAL_Evaluator_relinearize (SEALEvaluatorRef evaluator, SEALCiphertextRef ciphertext, 
+	                					      SEALRelinKeysRef relin_keys, SEALBoolean *success)
+{
+	using seal_c::wrap::unwrap;
+	using seal_c::wrap::wrap;
+	if (!success)
+		throw new std::logic_error ("success must not be a nullptr");
+	auto result = std::make_unique <seal::Ciphertext> ();
+	if (seal_c::relinearize (*unwrap (evaluator), *unwrap (ciphertext), *unwrap (relin_keys), *result)) {
 		*success = 1;
 		return wrap (result.release ());
 	} else {

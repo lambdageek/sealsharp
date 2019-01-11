@@ -30,5 +30,13 @@ namespace SEAL {
 			return success;
 		}
 
+		public bool Relinearize (Ciphertext ciphertext, RelinKeys relin_keys, out Ciphertext result)
+		{
+			bool success = handle.Relinearize (ciphertext.handle, relinkeys.handle, 
+				                               out Internal.Ciphertext result_h);
+			result = success ? new Ciphertext (result_h) : null;
+			return success;
+		}
+
 	}
 }

@@ -62,6 +62,7 @@ namespace Example {
 
 			//Multiply 2 encrypted long
 			evaluator.Multiply(encrypted_l, encrypted_m, out Ciphertext encrypted_result_mult);
+			// evaluator.Relinearize(encrypted_result_mult);
 			decryptor.Decrypt(encrypted_result_mult, out Plaintext decrypted_result_mult);
 			long decrypted_decoded_result_mult = encoder.DecodeLong(decrypted_result_mult);
 			Console.WriteLine ($"multiplication -> {l} * {m} = {decrypted_decoded_result_mult}");

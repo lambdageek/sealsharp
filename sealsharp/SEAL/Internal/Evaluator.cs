@@ -32,6 +32,12 @@ namespace SEAL.Internal {
 			return success != 0;
 		}
 
+		public bool Relinearize (Ciphertext ciphertext, RelinKeys relin_keys, out Ciphertext result)
+		{
+			result = SEAL_Evaluator_relinearize (this, ciphertext, relin_keys, out int success);
+			return success != 0;
+		}
+
 		[DllImport (SEALC.Lib)]
 		private static extern void SEAL_Evaluator_destroy (IntPtr handle);
 
@@ -43,7 +49,8 @@ namespace SEAL.Internal {
 															 Ciphertext ciphertext2, out int success);
 
 		[DllImport (SEALC.Lib)]
-		private static extern Ciphertext SEAL_Evaluator_multiply (Evaluator evaluator, Ciphertext ciphertext1, 
-															      Ciphertext ciphertext2, out int success);
+		private static extern Ciphertext SEAL_Evaluator_multiply (Evaluator evaluator, Ciphertext ciphertext, 
+															      RelinKeys relin_keys, out int success);
+
 	}
 }

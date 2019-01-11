@@ -27,6 +27,7 @@ target_sources (seal-c
     ciphertext.cpp
     evaluator.cpp
     memory_pool_handle.cpp
+    relin_keys.cpp
 )
 
 # include directories.
