@@ -26,6 +26,12 @@ namespace SEAL.Internal {
 			return success != 0;
 		}
 
+		public bool Multiply (Ciphertext ciphertext1, Ciphertext ciphertext2, out Ciphertext result)
+		{
+			result = SEAL_Evaluator_multiply (this, ciphertext1, ciphertext2, out int success);
+			return success != 0;
+		}
+
 		[DllImport (SEALC.Lib)]
 		private static extern void SEAL_Evaluator_destroy (IntPtr handle);
 
@@ -35,5 +41,9 @@ namespace SEAL.Internal {
 		[DllImport (SEALC.Lib)]
 		private static extern Ciphertext SEAL_Evaluator_add (Evaluator evaluator, Ciphertext ciphertext1, 
 															 Ciphertext ciphertext2, out int success);
+
+		[DllImport (SEALC.Lib)]
+		private static extern Ciphertext SEAL_Evaluator_multiply (Evaluator evaluator, Ciphertext ciphertext1, 
+															      Ciphertext ciphertext2, out int success);
 	}
 }

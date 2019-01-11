@@ -21,6 +21,7 @@ typedef struct SEALOpaqueDecryptor *SEALDecryptorRef;
 typedef struct SEALOpaquePlaintext *SEALPlaintextRef;
 typedef struct SEALOpaqueCiphertext *SEALCiphertextRef;
 typedef struct SEALOpaqueEvaluator *SEALEvaluatorRef;
+typedef struct SEALOpaqueMemoryPoolHandle *SEALMemoryPoolHandleRef;
 
 /* Encoder hierarchy */
 typedef struct SEALOpaqueAbstractIntegerEncoder *SEALAbstractIntegerEncoderRef;

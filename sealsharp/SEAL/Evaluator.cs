@@ -22,5 +22,13 @@ namespace SEAL {
 			return success;
 		}
 
+		public bool Multiply (Ciphertext ciphertext1, Ciphertext ciphertext2, out Ciphertext result)
+		{
+			bool success = handle.Multiply (ciphertext1.handle, ciphertext2.handle, 
+				                            out Internal.Ciphertext result_h);
+			result = success ? new Ciphertext (result_h) : null;
+			return success;
+		}
+
 	}
 }

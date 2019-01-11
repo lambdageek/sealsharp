@@ -30,10 +30,10 @@ namespace Example {
 
 			var evaluator = new Evaluator (context);
 
-			long l = 5;
+			long l = 3;
 			Plaintext encoded_l = encoder.Encode (l);
 
-			long m = 6;
+			long m = 8;
 			Plaintext encoded_m = encoder.Encode (m);
 			encryptor.Encrypt (encoded_m, out Ciphertext encrypted_m);
 
@@ -59,6 +59,12 @@ namespace Example {
 			decryptor.Decrypt(encrypted_result, out Plaintext decrypted_result);
 			long decrypted_decoded_result = encoder.DecodeLong(decrypted_result);
 			Console.WriteLine ($"addition -> {l} + {m} = {decrypted_decoded_result}");
+
+			//Multiply 2 encrypted long
+			evaluator.Multiply(encrypted_l, encrypted_m, out Ciphertext encrypted_result_mult);
+			decryptor.Decrypt(encrypted_result_mult, out Plaintext decrypted_result_mult);
+			long decrypted_decoded_result_mult = encoder.DecodeLong(decrypted_result_mult);
+			Console.WriteLine ($"multiplication -> {l} * {m} = {decrypted_decoded_result_mult}");
 
 
 			Console.WriteLine ("All Done");

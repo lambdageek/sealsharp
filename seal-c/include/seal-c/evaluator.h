@@ -16,6 +16,10 @@ SEALCiphertextRef
 SEAL_Evaluator_add (SEALEvaluatorRef evaluator, SEALCiphertextRef ciphertext1, 
 	                SEALCiphertextRef ciphertext2, SEALBoolean *success);
 
+SEALCiphertextRef
+SEAL_Evaluator_multiply (SEALEvaluatorRef evaluator, SEALCiphertextRef ciphertext1, 
+	                     SEALCiphertextRef ciphertext2, SEALBoolean *success);
+
 END_SEAL_C_DECL
 
 #endif
