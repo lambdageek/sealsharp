@@ -26,6 +26,18 @@ namespace seal_c {
 		}
 	}
 
+	bool
+	invariant_noise_budget (seal::Decryptor& decryptor, const seal::Ciphertext& ciphertext) noexcept
+	{
+		// TODO: don't just use a boolean, also write string error message to some buffer
+		try {
+			decryptor.invariant_noise_budget (ciphertext);
+			return true;
+		} catch (std::invalid_argument) {
+			return false;
+		}
+	}
+
 } // namespace seal_c
 
 SEALDecryptorRef
@@ -51,6 +63,18 @@ SEAL_Decryptor_decrypt_new (SEALDecryptorRef decryptor, SEALCiphertextRef cipher
 	} else {
 		*success = 0;
 		return wrap<seal::Plaintext*> (nullptr);
+	}
+}
+
+int
+SEAL_Decryptor_invariant_noise_budget (SEALDecryptorRef decryptor, SEALCiphertextRef ciphertext)
+{
+	using seal_c::wrap::unwrap;
+	using seal_c::wrap::wrap;
+	if (seal_c::invariant_noise_budget (*unwrap (decryptor), *unwrap (ciphertext))) {
+		return seal_c::invariant_noise_budget (*unwrap (decryptor), *unwrap (ciphertext));
+	} else {
+		return 0;
 	}
 }
 

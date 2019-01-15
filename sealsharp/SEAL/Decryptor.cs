@@ -16,5 +16,10 @@ namespace SEAL {
 			return success;
 		}
 
+		public int InvariantNoiseBudget (Ciphertext ciphertext)
+		{
+			return handle.InvariantNoiseBudget (ciphertext.handle);
+		}
+
 	}
 }

@@ -30,10 +30,10 @@ namespace Example {
 
 			var evaluator = new Evaluator (context);
 
-			long l = 3;
+			long l = 8;
 			Plaintext encoded_l = encoder.Encode (l);
 
-			long m = 8;
+			long m = 12;
 			Plaintext encoded_m = encoder.Encode (m);
 			encryptor.Encrypt (encoded_m, out Ciphertext encrypted_m);
 
@@ -64,7 +64,14 @@ namespace Example {
 
 			//Multiply 2 encrypted long
 			evaluator.Multiply(encrypted_l, encrypted_m, out Ciphertext encrypted_result_mult);
+			int inv_before = decryptor.InvariantNoiseBudget(encrypted_result_mult);
+			Console.WriteLine ($"size: {encrypted_result_mult.size()}");
+			Console.WriteLine ($"invariant noise budget before relinearize: {inv_before}");
+
 			evaluator.Relinearize(encrypted_result_mult, relin_keys, out Ciphertext result_relin);
+			int inv_after = decryptor.InvariantNoiseBudget(result_relin);
+			Console.WriteLine ($"invariant noise budget after relinearize: {inv_after}");
+
 			decryptor.Decrypt(result_relin, out Plaintext decrypted_result_mult);
 			long decrypted_decoded_result_mult = encoder.DecodeLong(decrypted_result_mult);
 			Console.WriteLine ($"multiplication -> {l} * {m} = {decrypted_decoded_result_mult}");

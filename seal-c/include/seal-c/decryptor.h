@@ -13,6 +13,9 @@ SEAL_Decryptor_construct (SEALSharedContextRef context, SEALSecretKeyRef secret_
 SEALPlaintextRef
 SEAL_Decryptor_decrypt_new (SEALDecryptorRef decryptor, SEALCiphertextRef ciphertext, SEALBoolean *success);
 
+int
+SEAL_Decryptor_invariant_noise_budget (SEALDecryptorRef decryptor, SEALCiphertextRef ciphertext);
+
 void
 SEAL_Decryptor_destroy (SEALDecryptorRef decryptor);
 
