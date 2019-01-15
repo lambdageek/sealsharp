@@ -49,8 +49,12 @@ namespace SEAL.Internal {
 															 Ciphertext ciphertext2, out int success);
 
 		[DllImport (SEALC.Lib)]
-		private static extern Ciphertext SEAL_Evaluator_multiply (Evaluator evaluator, Ciphertext ciphertext, 
-															      RelinKeys relin_keys, out int success);
+		private static extern Ciphertext SEAL_Evaluator_multiply (Evaluator evaluator, Ciphertext ciphertext1, 
+															  	  Ciphertext ciphertext2, out int success);
+
+		[DllImport (SEALC.Lib)]
+		private static extern Ciphertext SEAL_Evaluator_relinearize (Evaluator evaluator, Ciphertext ciphertext, 
+															         RelinKeys relin_keys, out int success);
 
 	}
 }

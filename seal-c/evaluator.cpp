@@ -5,6 +5,7 @@
 #include "ciphertext.hpp"
 #include "wrap.hpp"
 #include "shared_context.hpp"
+#include "relin_keys.hpp"
 
 namespace seal_c {
 	bool add (seal::Evaluator& evaluator, const seal::Ciphertext& ciphertext1, 

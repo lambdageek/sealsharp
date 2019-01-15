@@ -60,10 +60,12 @@ namespace Example {
 			long decrypted_decoded_result = encoder.DecodeLong(decrypted_result);
 			Console.WriteLine ($"addition -> {l} + {m} = {decrypted_decoded_result}");
 
+			RelinKeys relin_keys = keygen.RelinKeys (16);
+
 			//Multiply 2 encrypted long
 			evaluator.Multiply(encrypted_l, encrypted_m, out Ciphertext encrypted_result_mult);
-			// evaluator.Relinearize(encrypted_result_mult);
-			decryptor.Decrypt(encrypted_result_mult, out Plaintext decrypted_result_mult);
+			evaluator.Relinearize(encrypted_result_mult, relin_keys, out Ciphertext result_relin);
+			decryptor.Decrypt(result_relin, out Plaintext decrypted_result_mult);
 			long decrypted_decoded_result_mult = encoder.DecodeLong(decrypted_result_mult);
 			Console.WriteLine ($"multiplication -> {l} * {m} = {decrypted_decoded_result_mult}");
 
