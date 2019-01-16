@@ -15,7 +15,23 @@ namespace SEAL.Internal {
 			return true;
 		}
 
+		public static Ciphertext Create (SEALSharedContext context)
+		{
+			return SEAL_Ciphertext_construct (context);
+		}
+
+		public long Size()
+		{
+			return SEAL_Ciphertext_size (this);
+		}
+
 		[DllImport (SEALC.Lib)]
 		private static extern void SEAL_Ciphertext_destroy (IntPtr handle);
+
+		[DllImport (SEALC.Lib)]
+		private static extern Ciphertext SEAL_Ciphertext_construct (SEALSharedContext context);
+
+		[DllImport (SEALC.Lib)]
+		private static extern long SEAL_Ciphertext_size (Ciphertext ciphertext);
 	}
 }

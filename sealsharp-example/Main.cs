@@ -63,13 +63,19 @@ namespace Example {
 			RelinKeys relin_keys = keygen.RelinKeys (16);
 
 			//Multiply 2 encrypted long
+			Console.WriteLine ($"size of m: {encrypted_l.Size()}");
+			Console.WriteLine ($"size of n: {encrypted_m.Size()}");
+
 			evaluator.Multiply(encrypted_l, encrypted_m, out Ciphertext encrypted_result_mult);
 			int inv_before = decryptor.InvariantNoiseBudget(encrypted_result_mult);
-			Console.WriteLine ($"size: {encrypted_result_mult.size()}");
-			Console.WriteLine ($"invariant noise budget before relinearize: {inv_before}");
+			Console.WriteLine ($"expected size before relinearization -> (m+n-1): {encrypted_result_mult.Size()}");
+			
 
 			evaluator.Relinearize(encrypted_result_mult, relin_keys, out Ciphertext result_relin);
 			int inv_after = decryptor.InvariantNoiseBudget(result_relin);
+			Console.WriteLine ($"expected size after relinearization -> 2: {result_relin.Size()}");
+
+			Console.WriteLine ($"invariant noise budget before relinearize: {inv_before}");
 			Console.WriteLine ($"invariant noise budget after relinearize: {inv_after}");
 
 			decryptor.Decrypt(result_relin, out Plaintext decrypted_result_mult);

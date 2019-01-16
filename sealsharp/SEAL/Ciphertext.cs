@@ -8,5 +8,15 @@ namespace SEAL {
 		{
 			handle = h;
 		}
+
+		public Ciphertext (SEALContext context)
+		{
+			handle = Internal.Ciphertext.Create (context.handle);
+		}
+
+		public long Size ()
+		{
+			return handle.Size ();
+		}
 	}
 }
