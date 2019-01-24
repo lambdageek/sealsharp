@@ -1,9 +1,10 @@
 using System;
-
+using System.Linq.Expressions;
 using SEAL;
 
-namespace Example {
-	public class Example {
+namespace Example
+{
+    public class Example {
 		public static void Main()
 		{
 			example_bfv_basics_i ();
@@ -83,7 +84,47 @@ namespace Example {
 			Console.WriteLine ($"multiplication -> {l} * {m} = {decrypted_decoded_result_mult}");
 
 
-			Console.WriteLine ("All Done");
-		}
+            //Expression<Func<int,int,int>> e = (x1, x2) => x1 * ((x1 * -x2) + x2);
+            Expression<Func<long, long, long>> e = (x, y) => x * y;
+            Expression<Func<long, long, long>> e_r = (x, y) => Evaluator.R(x * y);
+            SealExpression seal_e = new SealExpression (e);
+			int num_mults = SealExpression.NumMults (e);
+            Console.WriteLine($"Expression: {e}");
+			Console.WriteLine($"Number of multiplications: {num_mults}");
+
+            ParameterExpression oldParam = Expression.Parameter(typeof(long), "x");
+            ParameterExpression newParam = Expression.Parameter(typeof(long), "z");
+            Expression e_replaced = SealExpression.RenameSingleParam(e, oldParam, newParam);
+            Console.WriteLine($"Expression after replacing {oldParam.Name} with {newParam.Name}: {e_replaced} \n");
+
+            Console.WriteLine($"x = {l}, x_size = {encrypted_l.Size()}");
+            Console.WriteLine($"y = {m}, y_size = {encrypted_m.Size()} \n");
+
+
+            var e_call = SealExpression.ReplaceWithCall<Func<Evaluator, RelinKeys, Ciphertext, Ciphertext, Ciphertext>>(e);
+            Console.WriteLine($"Expression after replacing arithmetic with call: {e_call}");
+            var f = e_call.Compile();
+            Ciphertext c1 = f(evaluator, relin_keys, encrypted_l, encrypted_m);
+            Console.WriteLine($"Expected size without relinearization: (m+n-1)");
+            Console.WriteLine($"Size without relin: {c1.Size()}");
+
+            decryptor.Decrypt(c1, out Plaintext p1);
+            long d1 = encoder.DecodeLong(p1);
+            Console.WriteLine($"{e} => {d1} \n");
+
+
+            var e_r_call = SealExpression.ReplaceWithCall<Func<Evaluator, RelinKeys, Ciphertext, Ciphertext, Ciphertext>>(e_r);
+            Console.WriteLine($"Expression after replacing arithmetic with call: {e_r_call}");
+            var f_r = e_r_call.Compile();
+            Ciphertext c1_r = f_r(evaluator, relin_keys, encrypted_l, encrypted_m);
+            Console.WriteLine($"Expected size after relinearization: 2");
+            Console.WriteLine($"Size with relin: {c1_r.Size()}");
+
+            decryptor.Decrypt(c1_r, out Plaintext p1_r);
+            long d1_r = encoder.DecodeLong(p1_r);
+            Console.WriteLine($"{e_r} => {d1_r} \n");
+
+            Console.WriteLine("All Done");
+        }
 	}
 }
