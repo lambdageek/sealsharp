@@ -24,6 +24,13 @@ SEAL_AbstractIntegerEncoder_encode_int64 (SEALAbstractIntegerEncoderRef encoder,
 	return seal_c::wrap::wrap (p.release ());
 }
 
+SEALPlaintextRef
+SEAL_AbstractIntegerEncoder_encode_int32 (SEALAbstractIntegerEncoderRef encoder, int32_t i)
+{
+    auto p = std::make_unique <seal::Plaintext> (seal_c::wrap::unwrap (encoder)->encode (i));
+    return seal_c::wrap::wrap (p.release ());
+}
+
 int64_t
 SEAL_AbstractIntegerEncoder_decode_int64 (SEALAbstractIntegerEncoderRef encoder, SEALPlaintextRef plaintext)
 {

@@ -25,6 +25,9 @@ target_sources (seal-c
     decryptor.cpp
     plaintext.cpp
     ciphertext.cpp
+    evaluator.cpp
+    memory_pool_handle.cpp
+    relin_keys.cpp
 )
 
 # include directories.

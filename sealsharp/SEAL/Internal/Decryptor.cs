@@ -26,6 +26,11 @@ namespace SEAL.Internal {
 			return success != 0;
 		}
 
+		public int InvariantNoiseBudget (Ciphertext ciphertext)
+		{
+			return SEAL_Decryptor_invariant_noise_budget (this, ciphertext);
+		}
+
 		[DllImport (SEALC.Lib)]
 		private static extern void SEAL_Decryptor_destroy (IntPtr handle);
 
@@ -34,5 +39,8 @@ namespace SEAL.Internal {
 
 		[DllImport (SEALC.Lib)]
 		private static extern Plaintext SEAL_Decryptor_decrypt_new (Decryptor decryptor, Ciphertext ciphertext, out int success);
+
+		[DllImport (SEALC.Lib)]
+		private static extern int SEAL_Decryptor_invariant_noise_budget (Decryptor decryptor, Ciphertext ciphertext);
 	}
 }

@@ -15,6 +15,9 @@ SEAL_KeyGenerator_get_public_key (SEALKeyGeneratorRef keygen);
 SEALSecretKeyRef
 SEAL_KeyGenerator_get_secret_key (SEALKeyGeneratorRef keygen);
 
+SEALRelinKeysRef
+SEAL_KeyGenerator_get_relin_keys (SEALKeyGeneratorRef keygen, int decomp_bit_count);
+
 void
 SEAL_KeyGenerator_destroy (SEALKeyGeneratorRef keygen);
 

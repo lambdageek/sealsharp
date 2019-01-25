@@ -13,7 +13,12 @@ namespace SEAL {
 			return new Plaintext (Handle.EncodeLong (l));
 		}
 
-		public long DecodeLong (Plaintext plaintext)
+        public Plaintext Encode(int l)
+        {
+            return new Plaintext(Handle.EncodeInt(l));
+        }
+
+        public long DecodeLong (Plaintext plaintext)
 		{
 			return Handle.DecodeLong (plaintext.handle);
 		}
