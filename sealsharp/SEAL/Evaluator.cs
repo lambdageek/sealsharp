@@ -1,7 +1,10 @@
 using System;
+using System.Reflection;
+using System.Linq.Expressions;
 
-namespace SEAL {
-	public class Evaluator {
+namespace SEAL
+{
+    public class Evaluator {
 		internal Internal.Evaluator handle;
 
 		internal Evaluator (Internal.Evaluator h)
@@ -27,9 +30,6 @@ namespace SEAL {
             if (evaluator.Add(ciphertext1, ciphertext2, out Ciphertext result))
                 return result;
             throw new ArgumentException("SimpleAdd failed - check the arguments");
-            // Exrpression addCall = Expressions.Call (typeof (SEAL.Evaluator), "SimpleAdd",  
-            //                                         null, evaluatorExpr, argExpr1, argExpr2);
-            //   "SEAL.Evaluator.SimpleAdd (evaluator, arg1, arg2)"
         }
 
         public bool Multiply (Ciphertext ciphertext1, Ciphertext ciphertext2, out Ciphertext result)
@@ -66,6 +66,41 @@ namespace SEAL {
         public static long R(long x)
         {
             return x;
+        }
+
+        public Ciphertext CompileAndRun<T1, T2>(Expression<Func<T1, T2>> e, RelinKeys relin_keys, Ciphertext c1)
+        {
+            var e2 = SealExpression.ReplaceWithCall<Func<Evaluator, RelinKeys, Ciphertext, Ciphertext>>(e);
+            var f = e2.Compile();
+            return f(this, relin_keys, c1);
+        }
+
+        public Ciphertext CompileAndRun<T1, T2, T3> (Expression<Func<T1, T2, T3>> e, RelinKeys relin_keys, Ciphertext c1, Ciphertext c2)
+        {
+            var e2 = SealExpression.ReplaceWithCall<Func<Evaluator, RelinKeys, Ciphertext, Ciphertext, Ciphertext>>(e);
+            var f = e2.Compile();
+            return f(this, relin_keys, c1, c2);
+        }
+
+        public Ciphertext CompileAndRun<T1, T2, T3, T4>(Expression<Func<T1, T2, T3, T4>> e, RelinKeys relin_keys, Ciphertext c1, Ciphertext c2, Ciphertext c3)
+        {
+            var e2 = SealExpression.ReplaceWithCall<Func<Evaluator, RelinKeys, Ciphertext, Ciphertext, Ciphertext, Ciphertext>>(e);
+            var f = e2.Compile();
+            return f(this, relin_keys, c1, c2, c3);
+        }
+
+        public Ciphertext CompileAndRun<T1, T2, T3, T4, T5>(Expression<Func<T1, T2, T3, T4, T5>> e, RelinKeys relin_keys, Ciphertext c1, Ciphertext c2, Ciphertext c3, Ciphertext c4)
+        {
+            var e2 = SealExpression.ReplaceWithCall<Func<Evaluator, RelinKeys, Ciphertext, Ciphertext, Ciphertext, Ciphertext, Ciphertext>>(e);
+            var f = e2.Compile();
+            return f(this, relin_keys, c1, c2, c3, c4);
+        }
+
+        public Ciphertext CompileAndRun<T1, T2, T3, T4, T5, T6>(Expression<Func<T1, T2, T3, T4, T5, T6>> e, RelinKeys relin_keys, Ciphertext c1, Ciphertext c2, Ciphertext c3, Ciphertext c4, Ciphertext c5)
+        {
+            var e2 = SealExpression.ReplaceWithCall<Func<Evaluator, RelinKeys, Ciphertext, Ciphertext, Ciphertext, Ciphertext, Ciphertext, Ciphertext>>(e);
+            var f = e2.Compile();
+            return f(this, relin_keys, c1, c2, c3, c4, c5);
         }
 
     }
