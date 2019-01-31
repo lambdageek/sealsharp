@@ -19,8 +19,8 @@ Expression<Func<long, long, long>> computation = (x, y) => x + (x * y);
 
 Evaluate expression:
 
-```
-Ciphertext encrypted_result = evaluator.CompileAndRun(computation, relin_keys, encrypted_x, encrypted_y);
+```csharp
+Ciphertext encrypted_result = evaluator.CompileAndRun (computation, relin_keys, encrypted_x, encrypted_y);
 ```
 
 A full example is in the [sealsharp-example](./sealsharp-example/) directory.
