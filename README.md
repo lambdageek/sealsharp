@@ -1,5 +1,23 @@
 
-# sealsharp - C# bindings for SEAL
+# sealsharp - C# bindings and API for SEAL
+
+## Introduction
+
+Sealsharp is a user-friendly API for SEAL. Computations are represented using C# LINQ Expressions to form an abstract syntax tree. Sealsharp analyzes and compiles this expression tree using C# bindings to the underlying SEAL library.
+
+More info about SEAL:
+Team -  https://www.microsoft.com/en-us/research/project/homomorphic-encryption/
+Github - https://github.com/Microsoft/SEAL/tree/aa7bf57aa11a91d9ca8712816550ae68793add99
+
+## Example
+
+Define expression:
+
+    Expression<Func<long, long, long>> e = (x, y) => x + (x * y);
+
+Evaluate expression:
+
+    Ciphertext c = evaluator.CompileAndRun(e, relin_keys, encrypted_l, encrypted_m);
 
 ## Building
 

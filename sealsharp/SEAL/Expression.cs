@@ -129,7 +129,7 @@ namespace SEAL
                         Expression relinCall = Expression.Call(typeof(Evaluator), "SimpleRelin", null, evalExpr, relinExpr, ciph);
                         return relinCall;
                     }
-                    throw new Exception("not R call");
+                    throw new Exception("not R method call");
                 case BinaryExpression bin:
                     Expression left = ReplaceWithCall2(bin.Left, evalExpr, relinExpr, paramDict);
                     Expression right = ReplaceWithCall2(bin.Right, evalExpr, relinExpr, paramDict);
