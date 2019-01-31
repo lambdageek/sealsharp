@@ -9,6 +9,8 @@
 
 ## Example
 
+![Example encrypted computation](./assets/crypto-compute.png)
+
 Define expression:
 
 ```csharp
