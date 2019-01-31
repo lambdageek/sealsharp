@@ -1,5 +1,27 @@
 
-# sealsharp - C# bindings for SEAL
+# sealsharp - C# bindings and API for SEAL
+
+## Introduction
+
+[SEAL](https://sealcrypto.org) is an open-source library from Microsoft Research ([code](https://github.com/Microsoft/SEAL)) for performing *homomorphic encryption* - a way of computing with encrypted data without first having to decrypt it.  
+
+**sealsharp** is a user-friendly .NET API for SEAL. Computations are represented using C# LINQ Expressions to form an abstract syntax tree. Sealsharp then analyzes and compiles this expression tree into calls to the underlying SEAL library.
+
+## Example
+
+Define expression:
+
+```csharp
+Expression<Func<long, long, long>> computation = (x, y) => x + (x * y);
+```
+
+Evaluate expression:
+
+```
+Ciphertext encrypted_result = evaluator.CompileAndRun(computation, relin_keys, encrypted_l, encrypted_m);
+```
+
+A full example is in the [sealsharp-example](./sealsharp-example/) directory.
 
 ## Building
 

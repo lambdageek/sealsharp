@@ -19,6 +19,10 @@ namespace SEAL
             return Visit(expression);
         }
 
+
+        /*
+         * Returns number of multiplications in an expression
+         */        
         public static int NumMults(Expression e) {
             switch (e)
             {
@@ -44,6 +48,9 @@ namespace SEAL
             }
         }
 
+        /*
+         * Replaces a parameter with another parameter, and returns the new expression
+         */        
         public static Expression RenameSingleParam(Expression e, ParameterExpression oldParam, ParameterExpression newParam)
         {
             switch (e)
@@ -83,6 +90,9 @@ namespace SEAL
             }
         }
 
+        /*
+         * Returns a new lambda expression with new parameters and new body       
+         */       
         public static Expression<TDelegate2> ReplaceWithCall<TDelegate2>(LambdaExpression e) where TDelegate2 : class
         {
             switch (e)
@@ -101,7 +111,7 @@ namespace SEAL
                         paramDict[current] = newParam;
                         paramList.Add(newParam);
                     }
-                    Expression newBody = ReplaceWithCall2(lam.Body, evalExpr, relinExpr, paramDict);
+                    Expression newBody = CreateLambdaBody(lam.Body, evalExpr, relinExpr, paramDict);
                     ReadOnlyCollection<ParameterExpression> parameters = new ReadOnlyCollection<ParameterExpression>(paramList);
                     return Expression.Lambda<TDelegate2>(newBody, false, parameters);
                 default:
@@ -109,7 +119,10 @@ namespace SEAL
             }
         }
 
-        public static Expression ReplaceWithCall2(Expression e, ParameterExpression evalExpr, ParameterExpression relinExpr,
+        /*
+         * Returns lambda body expression with replaced parameters and appropriate calls to SEAL
+         */
+        public static Expression CreateLambdaBody(Expression e, ParameterExpression evalExpr, ParameterExpression relinExpr,
                                                   Dictionary<ParameterExpression, ParameterExpression> paramDict)
         {
             switch (e)
@@ -124,15 +137,15 @@ namespace SEAL
                         Expression ciph = null;
                         for (int i=0; i<methodcall.Arguments.Count; i++)
                         {
-                            ciph = ReplaceWithCall2(methodcall.Arguments[i], evalExpr, relinExpr, paramDict);
+                            ciph = CreateLambdaBody(methodcall.Arguments[i], evalExpr, relinExpr, paramDict);
                         }
                         Expression relinCall = Expression.Call(typeof(Evaluator), "SimpleRelin", null, evalExpr, relinExpr, ciph);
                         return relinCall;
                     }
-                    throw new Exception("not R call");
+                    throw new Exception("not R method call");
                 case BinaryExpression bin:
-                    Expression left = ReplaceWithCall2(bin.Left, evalExpr, relinExpr, paramDict);
-                    Expression right = ReplaceWithCall2(bin.Right, evalExpr, relinExpr, paramDict);
+                    Expression left = CreateLambdaBody(bin.Left, evalExpr, relinExpr, paramDict);
+                    Expression right = CreateLambdaBody(bin.Right, evalExpr, relinExpr, paramDict);
                     if (bin.NodeType == ExpressionType.Add)
                     {
                         Expression addCall = Expression.Call(typeof(Evaluator), "SimpleAdd", null, evalExpr, left, right);
