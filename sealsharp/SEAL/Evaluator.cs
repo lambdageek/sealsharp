@@ -47,7 +47,6 @@ namespace SEAL
             throw new ArgumentException("SimpleMult failed - check the arguments");
         }
 
-
         public bool Relinearize (Ciphertext ciphertext, RelinKeys relin_keys, out Ciphertext result)
 		{
 			bool success = handle.Relinearize (ciphertext.handle, relin_keys.handle, 
@@ -63,11 +62,13 @@ namespace SEAL
             throw new ArgumentException("SimpleRelin failed - check the arguments");
         }
 
+        // Identify relinearization call
         public static long R(long x)
         {
             return x;
         }
 
+        // Series of overloaded methods to handle different input sizes
         public Ciphertext CompileAndRun<T1, T2>(Expression<Func<T1, T2>> e, RelinKeys relin_keys, Ciphertext c1)
         {
             var newExpr = SealExpression.ReplaceWithCall<Func<Evaluator, RelinKeys, Ciphertext, Ciphertext>>(e);
