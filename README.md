@@ -20,10 +20,23 @@ Expression<Func<long, long, long>> computation = (x, y) => x + (x * y);
 Evaluate expression:
 
 ```
-Ciphertext encrypted_result = evaluator.CompileAndRun(computation, relin_keys, encrypted_l, encrypted_m);
+Ciphertext encrypted_result = evaluator.CompileAndRun(computation, relin_keys, encrypted_x, encrypted_y);
 ```
 
 A full example is in the [sealsharp-example](./sealsharp-example/) directory.
+
+## Status
+
+The project is an early proof of concept.
+
+At the moment we have C# bindings for only a small subset of the full SEAL API.
+More functions and classes are easy to add, but it is work that has not been
+done yet.
+
+The SEAL Linq Expressions high-level API also only covers a small subset of the
+possible expressions that you could write.
+
+PRs welcome!
 
 ## Building
 
