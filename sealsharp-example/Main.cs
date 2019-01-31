@@ -20,6 +20,8 @@ namespace Example
              */
 
             /*
+             * C# Bindings 
+             * 
              * Reference https://github.com/Microsoft/SEAL/blob/aa7bf57aa11a91d9ca8712816550ae68793add99/examples/examples.cpp#L257
              * for information about parameter setup and class initialization
              */
@@ -70,7 +72,7 @@ namespace Example
 
 
             /*
-             * Example of computation using API
+             * Simplified computation
              */
 
             // Define expression
