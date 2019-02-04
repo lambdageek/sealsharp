@@ -42,7 +42,6 @@ namespace Example
             /*
              * Example of computation using only C# bindings
              */
-                         
 			long l = 8;
             long m = 12;
 
@@ -64,38 +63,37 @@ namespace Example
             evaluator.Relinearize(encrypted_result_mult, relin_keys, out Ciphertext result_relin);
 
             // Add 2 encrypted long
-            evaluator.Add(result_relin, encrypted_l, out Ciphertext c);
+            evaluator.Add(result_relin, encrypted_l, out Ciphertext encrypted_res);
 
             // Decypt and Decode
-            decryptor.Decrypt(c, out Plaintext p);
+            decryptor.Decrypt(encrypted_res, out Plaintext p);
             long result = encoder.DecodeLong(p);
 
 
             /*
              * Simplified computation
              */
-
             // Define expression
-            Expression<Func<long, long, long>> e = (x, y) => x + (x * y);
+            Expression<Func<long, long, long>> computation = (x, y) => x + (x * y);
 
             // Expression with relinearization
-            Expression<Func<long, long, long>> e1 = (x, y) => x + Evaluator.R(x * y);
+            Expression<Func<long, long, long>> relin_computation = (x, y) => x + Evaluator.R(x * y);
 
             // Evaluate expression
-            Ciphertext c1 = evaluator.CompileAndRun(e, relin_keys, encrypted_l, encrypted_m);
+            Ciphertext encrypted_result = evaluator.CompileAndRun(computation, relin_keys, encrypted_l, encrypted_m);
 
             // Decrypt and decode result
-            decryptor.Decrypt(c1, out Plaintext p1);
-            long result1 = encoder.DecodeLong(p);
+            decryptor.Decrypt(encrypted_result, out Plaintext plaintext_result);
+            long result1 = encoder.DecodeLong(plaintext_result);
 
             // Evaluate result and size
-            Console.WriteLine(e);
+            Console.WriteLine(computation);
             Console.WriteLine($"Result: {result}");
-            Console.WriteLine($"Size: {c.Size()}");
+            Console.WriteLine($"Size: {encrypted_res.Size()}");
             Console.WriteLine("\n");
-            Console.WriteLine(e1);
+            Console.WriteLine(relin_computation);
             Console.WriteLine($"Result: {result1}");
-            Console.WriteLine($"Size: {c1.Size()}");
+            Console.WriteLine($"Size: {encrypted_result.Size()}");
         }
 	}
 }
